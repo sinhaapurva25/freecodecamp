@@ -1,29 +1,27 @@
 def exceptionHandling(problems):
-    message = ''
+    
     if len(problems) > 5:
-        message = 'Error: Too many problems.'
+        raise Exception('Error: Too many problems.')
 
     for i in problems:
-        if i.split()[1]=='/' or i.split()[1]=='*':
-            message = "Error: Operator must be '+' or '-'."
-            break
+        if i.split()[1] == '+' or i.split()[1] == '-': pass
+        else: raise Exception("Error: Operator must be '+' or '-'.")
 
     numb = ''
     for j in [i.split()[0] for i in problems]+[i.split()[2] for i in problems]:
         numb += j
     for j in numb:
         if j not in '0123456789':
-            message = 'Error: Numbers must only contain digits.'
-            break
+            raise Exception('Error: Numbers must only contain digits.')
 
     for j in [i.split()[0] for i in problems]+[i.split()[2] for i in problems]:
         if int(j) > 9999:
-            message = 'Error: Numbers cannot be more than four digits.'
-            break
-    return message
+            raise Exception('Error: Numbers cannot be more than four digits.')
+
 def arithmetic_arranger(problems,resBoolean=False):
-    m = exceptionHandling(problems)
-    if m is False:
+    if exceptionHandling(problems):
+        return None
+    else:
         num1Arr = [int(i.split()[0]) for i in problems]
         operandArr = [i.split()[1] for i in problems]
         num2Arr = [int(i.split()[2]) for i in problems]
@@ -57,5 +55,3 @@ def arithmetic_arranger(problems,resBoolean=False):
 
         arranged_problems = line1 + '\n' + line2 + '\n' + line3 + '\n' + res
         return arranged_problems
-    else:
-        return m
