@@ -12,7 +12,7 @@ def draw_plot():
 
     # Create first line of best fit
     lingress_output = linregress(df['Year'], df['CSIRO Adjusted Sea Level'])
-    x = [i for i in range(1880, 2050, 1)]
+    x = [i for i in range(1880, 2051)]
     y = [(lingress_output[0] * x[i] + lingress_output[1]) for i in range(0, len(x))]
     # x = np.array([i for i in range(1880, 2050)])
     # y = lingress_output[0] * x + lingress_output[1]
@@ -21,7 +21,7 @@ def draw_plot():
     # Create second line of best fit
     # lingress_output = linregress(df['Year'][df['Year'] >= 2000], df['CSIRO Adjusted Sea Level'][df['Year'] >= 2000])
     lingress_output = linregress(df['Year'][df['Year'] >= 2000], df['CSIRO Adjusted Sea Level'][df['Year'] >= 2000])
-    x_2 = np.array([i for i in range(1880, 2050, 1)])
+    x_2 = np.array([i for i in range(2000, 2051)])
     y_2 = [(lingress_output[0] * x_2[i] + lingress_output[1]) for i in range(0, len(x_2))]
     # x_2 = np.array([i for i in range(1880, 2050)])
     # y_2 = lingress_output[0] * x_2 + lingress_output[1]
