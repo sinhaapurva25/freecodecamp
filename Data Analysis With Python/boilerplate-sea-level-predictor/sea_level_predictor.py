@@ -5,7 +5,7 @@ import numpy as np
 
 def draw_plot():
     # Read data from file
-    df = pd.read_csv(r'epa-sea-level.csv')
+    df = pd.read_csv(r'Data Analysis With Python\boilerplate-sea-level-predictor\epa-sea-level.csv')
 
     # Create scatter plot
     plt.scatter(df['Year'], df['CSIRO Adjusted Sea Level'])
