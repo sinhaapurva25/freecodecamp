@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Import data
-df = pd.read_csv('boilerplate-medical-data-visualizer\\medical_examination.csv')
+df = pd.read_csv('medical_examination.csv')
 
 # Add 'overweight' column
 df.loc[(df['weight']/((df['height']/100)*(df['height']/100))) > 25, 'overweight'] = 1
@@ -24,8 +24,9 @@ def draw_cat_plot():
     # Group and reformat the data to split it by 'cardio'. Show the counts of each feature. You will have to rename one of the columns for the catplot to work correctly.
 
     # Draw the catplot with 'sns.catplot()'
+    df_cat = sns.catplot(x='variable', hue='value', data=df_cat,col='cardio', kind="count").set_ylabels("total")
     plt.figure(figsize=(20,20))
-    fig = (sns.catplot(x='variable', hue='value', data=df_cat,col='cardio', kind="count")).set_ylabels("total")
+    fig = df_cat.fig
 
     # Do not modify the next two lines
     fig.savefig('catplot.png')
@@ -34,15 +35,16 @@ def draw_cat_plot():
 # Draw Heat Map
 def draw_heat_map():
     # Clean the data
-    df_heat = df[((df['ap_lo'] <= df['ap_hi']) &
-                 (df['height'] >= df['height'].quantile(0.025)) &
-                 (df['height'] >= df['height'].quantile(0.975)) &
-                 (df['weight'] >= df['weight'].quantile(0.025)) &
-                 (df['weight'] >= df['weight'].quantile(0.975)))
-                 ]
+    # df_heat = df[((df['ap_lo'] <= df['ap_hi']) &
+    #              (df['height'] >= df['height'].quantile(0.025)) &
+    #              (df['height'] >= df['height'].quantile(0.975)) &
+    #              (df['weight'] >= df['weight'].quantile(0.025)) &
+    #              (df['weight'] >= df['weight'].quantile(0.975)))
+    #              ]
+    df_heat = (df['ap_lo'] > df['ap_hi'])| (df['height'] < df['height'].quantile(0.025)) | (df['height'] > df['height'].quantile(0.975)) | (df['weight'] < df['weight'].quantile(0.025)) | (df['weight'] > df['weight'].quantile(0.975))
 
     # Calculate the correlation matrix
-    corr = df.corr()
+    corr = df.drop(df[df_heat].index).reset_index(drop=True).corr()
 
     # Generate a mask for the upper triangle
     mask = np.triu(np.ones_like(corr))
